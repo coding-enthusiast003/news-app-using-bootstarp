@@ -1,0 +1,47 @@
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+#banner {
+    
+    white-space: nowrap; /* Prevents text from breaking into lines */
+    font-size: 18px;
+    font-weight: bold;
+    animation: slide 10s linear infinite;
+    padding: 0;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.icon-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#HamburgerMenu{
+    position: relative;
+}
+.category-list {
+    display: none; /* Initially hidden */
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    background: #f4f4f4;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 63%; /* Places it directly below the hamburger */
+    left: 14%;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.category-list.show {
+    display: block; /* Show when toggled */
+}
+ 
