@@ -29,7 +29,7 @@ prefferednews.addEventListener('click', () => { // Event listener for the hambur
 
 function fetchNews(category = 'general') {
 
-    // Check if cached data is available and valid
+    // // Check if cached data is available and valid
     if (cachedData && cachedTime && now - cachedTime < CACHE_DURATION) {
         console.log("Using cached news data.");
         renderNews(JSON.parse(cachedData)); // Use cached data
@@ -55,6 +55,9 @@ function fetchNews(category = 'general') {
         localStorage.setItem(CACHE_TIME_KEY, now.toString()); // Cache timestamp
         console.log("News data cached successfully.");
 
+        // ✅ Ensure the latest fetched news is displayed
+        renderNews(value.articles);  // This forces UI update
+
         let ihtml = ""
         for (let item of value.articles) { 
             console.log(item.title)
@@ -71,7 +74,8 @@ function fetchNews(category = 'general') {
         </div>
 `
         }
-        let cardContainer = document.getElementById('cardContainer'); //
+        let cardContainer = document.getElementById('cardContainer'); 
+        cardContainer.innerHTML = ""; // ✅ Clear old content before adding new content
         cardContainer.innerHTML = ihtml;
     })
         .catch((error) => {
