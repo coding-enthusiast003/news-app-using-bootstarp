@@ -16,7 +16,7 @@ A simple news website using API that delivers the latest news and updates in var
 •  Stores news data locally: The fetched news is saved in localStorage to reduce unnecessary API calls. 
 
 
-   📝 Code Implementation:-
+   📝 Code Implementation for cache setting(local storage):-
     
     //Setting up cache
     const CACHE_KEY = "newsData";  // Key to store news articles  
