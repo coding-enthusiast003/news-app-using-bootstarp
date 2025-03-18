@@ -8,13 +8,17 @@ A dynamic news website that fetches and displays the latest news across various 
 - 📱 Fully responsive design for mobile and desktop
 - ⚡ Local storage caching to optimize API requests and reduce redundant fetches
 
-🔹 Caching System (Optimized News Fetching)
-✔ How It Works:
+## 🔹 Caching System (Optimized News Fetching)
+✔ **How It Works:**
 
-•  Cache validation: If cached data exists and is less than 30 minutes old, it is used.
-•  Automatic refresh: If the cache is expired or missing, old data is cleared, and fresh news is fetched from the API.
-•  Efficient storage: News data is saved in localStorage to minimize unnecessary API calls.
+- ✅ **Cache validation:**  
+  Uses cached data if it’s available and less than 30 minutes old.  
 
+- 🔄 **Automatic refresh:**  
+  Clears outdated cache and fetches fresh news when needed.  
+
+- 💾 **Efficient storage:**  
+  Saves news data in `localStorage` to reduce redundant API requests.  
    📝 Code Implementation for cache setting(local storage):-
     
     
