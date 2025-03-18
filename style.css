@@ -1,9 +1,9 @@
 @keyframes slide {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(100%);
     }
     100% {
-        transform: translateX(100%);
+        transform: translateX(-100%);
     }
 }
 #banner {
@@ -39,9 +39,22 @@
     left: 14%;
     z-index: 1;
     cursor: pointer;
+     
 }
 
 .category-list.show {
     display: block; /* Show when toggled */
+    
+}
+.category-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+.category-list li:last-child {
+    border-bottom: none;
+}
+.category-list li:hover {
+    background: #eaeaea;
 }
  

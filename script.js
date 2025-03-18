@@ -2,20 +2,6 @@ let key = "618e6acee2b24825b958ca9e05d1e509"
 let url = `https://newsapi.org/v2/top-headlines?domains=bbc.com,cnn.com,wsj.com&language=en&apiKey=${key}`
 
 
-//Setting up cache
-const CACHE_KEY = "newsData";  // Key to store news articles  
-const CACHE_TIME_KEY = "newsTimestamp";  // Key to store the time of the last API fetch  
-const CACHE_DURATION = 30 * 60 * 1000;  // 30 minutes in milliseconds  
-
-const cachedData = localStorage.getItem(CACHE_KEY); // Retrieve cached news articles (if available) from localStorage
-const cachedTime = Number(localStorage.getItem(CACHE_TIME_KEY)); // Retrieve the timestamp of the last API fetch from localStorage
-const now = new Date().getTime() // Get the current timestamp in milliseconds
-
-if (cachedTime && now - cachedTime >= CACHE_DURATION) {
-    localStorage.removeItem(CACHE_KEY);  // Clear expired cache
-    localStorage.removeItem(CACHE_TIME_KEY);
-    console.log("Cache expired, clearing storage...");
-}
 
 
 let prefferednews = document.getElementById('HamburgerMenu')
@@ -29,9 +15,25 @@ prefferednews.addEventListener('click', () => { // Event listener for the hambur
 
 function fetchNews(category = 'general') {
 
-    // // Check if cached data is available and valid
+    //Setting up cache
+    const CACHE_KEY = `newsData_${category}`;  // Key to store news articles  
+    const CACHE_TIME_KEY = `newsTimestamp_${category}`;  // Key to store the time of the last API fetch  
+    const CACHE_DURATION = 30 * 60 * 1000;  // 30 minutes in milliseconds  
+
+    const cachedData = localStorage.getItem(CACHE_KEY); // Retrieve cached news articles (if available) from localStorage
+    const cachedTime = Number(localStorage.getItem(CACHE_TIME_KEY)); // Retrieve the timestamp of the last API fetch from localStorage
+    const now = new Date().getTime() // Get the current timestamp in milliseconds
+
+    if (cachedTime && now - cachedTime >= CACHE_DURATION) {
+        localStorage.removeItem(CACHE_KEY);  // Clear expired cache
+        localStorage.removeItem(CACHE_TIME_KEY);
+        console.log("Cache expired, clearing storage...");
+    }
+
+
+     // Check if cached data is available and valid
     if (cachedData && cachedTime && now - cachedTime < CACHE_DURATION) {
-        console.log("Using cached news data.");
+        console.log(`Using cached news data for ${category}`);
         renderNews(JSON.parse(cachedData)); // Use cached data
         return;
     }
@@ -48,7 +50,7 @@ function fetchNews(category = 'general') {
         return value.json() // Convert the response to JSON
     }).then((value) => {
         console.log(value)
-        console.log("Total articles found:", value.totalResults);
+        console.log(`Total articles found for ${selectedCategory}:`, value.totalResults);
 
         // ✅ Store fetched data in cache
         localStorage.setItem(CACHE_KEY, JSON.stringify(value.articles)); // Cache articles
@@ -59,7 +61,7 @@ function fetchNews(category = 'general') {
         renderNews(value.articles);  // This forces UI update
 
         let ihtml = ""
-        for (let item of value.articles) { 
+        for (let item of value.articles) {
             console.log(item.title)
             ihtml += `
 <div class="card mx-2 my-2" style="width: 22rem;">
@@ -74,7 +76,7 @@ function fetchNews(category = 'general') {
         </div>
 `
         }
-        let cardContainer = document.getElementById('cardContainer'); 
+        let cardContainer = document.getElementById('cardContainer');
         cardContainer.innerHTML = ""; // ✅ Clear old content before adding new content
         cardContainer.innerHTML = ihtml;
     })
@@ -106,5 +108,5 @@ function renderNews(articles) {
             </div>
         `;
     }
-    document.getElementById("cardContainer").innerHTML = ihtml; 
+    document.getElementById("cardContainer").innerHTML = ihtml;
 }

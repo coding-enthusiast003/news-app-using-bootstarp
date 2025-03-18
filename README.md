@@ -1,37 +1,23 @@
 # 📰 News Website  
 
-A simple news website using API that delivers the latest news and updates in various categories. Built using [ HTML, CSS, JavaScript with Bootstrap].  
+A dynamic news website that fetches and displays the latest news across various categories. Built using HTML, CSS, JavaScript, and Bootstrap, it integrates the News API to provide real-time updates. 
 
 ## 📌 Features  
 - 📰 Displays trending and latest news  
 - 📂 Categorized news sections (Politics, Sports, Technology, etc.)  
-- 📱  Responsive design for mobile and desktop 
-- ⚡ Implements local storage caching to optimize API requests
+- 📱 Fully responsive design for mobile and desktop
+- ⚡ Local storage caching to optimize API requests and reduce redundant fetches
 
 🔹 Caching System (Optimized News Fetching)
 ✔ How It Works:
 
-•  Checks cache validity: If cached data exists and is less than 30 minutes old, it is used.
-•  Fetches fresh data if needed: If the cache is expired or missing, the old cache is cleared, and fresh news is fetched from the API.
-•  Stores news data locally: The fetched news is saved in localStorage to reduce unnecessary API calls. 
-
+•  Cache validation: If cached data exists and is less than 30 minutes old, it is used.
+•  Automatic refresh: If the cache is expired or missing, old data is cleared, and fresh news is fetched from the API.
+•  Efficient storage: News data is saved in localStorage to minimize unnecessary API calls.
 
    📝 Code Implementation for cache setting(local storage):-
     
-    //Setting up cache
-    const CACHE_KEY = "newsData";  // Key to store news articles  
-    const CACHE_TIME_KEY = "newsTimestamp";  // Key to store the time of the last API fetch  
-    const CACHE_DURATION = 30 * 60 * 1000;  // 30 minutes in milliseconds  
-
-    const cachedData = localStorage.getItem(CACHE_KEY); // Retrieve cached news articles (if available) from localStorage
-    const cachedTime = Number(localStorage.getItem(CACHE_TIME_KEY)); // Retrieve the timestamp of the last API fetch from localStorage
-    const now = new Date().getTime() // Get the current timestamp in milliseconds
-
-    if (cachedTime && now - cachedTime >= CACHE_DURATION) {
-        localStorage.removeItem(CACHE_KEY);  // Clear expired cache
-        localStorage.removeItem(CACHE_TIME_KEY);
-        console.log("Cache expired, clearing storage...");
-    }
+    
 
     // ✅ Ensure this function exists before calling fetchNews
     function renderNews(articles) {
@@ -55,31 +41,44 @@ A simple news website using API that delivers the latest news and updates in var
         
     // ✅ Function to fetch news
     function fetchNews(category = 'general') {
+
+    //Setting up cache
+    const CACHE_KEY = `newsData_${category}`;  // Key to store news articles  
+    const CACHE_TIME_KEY = `newsTimestamp_${category}`;  // Key to store the time of the last API fetch  
+    const CACHE_DURATION = 30 * 60 * 1000;  // 30 minutes in milliseconds  
+
+    const cachedData = localStorage.getItem(CACHE_KEY); // Retrieve cached news articles (if available) from localStorage
+    const cachedTime = Number(localStorage.getItem(CACHE_TIME_KEY)); // Retrieve the timestamp of the last API fetch from localStorage
+    const now = new Date().getTime() // Get the current timestamp in milliseconds
+
+    if (cachedTime && now - cachedTime >= CACHE_DURATION) {
+        localStorage.removeItem(CACHE_KEY);  // Clear expired cache
+        localStorage.removeItem(CACHE_TIME_KEY);
+        console.log("Cache expired, clearing storage...");
+    }
+
+        // Check if cached data is available and valid
         if (cachedData && cachedTime && now - cachedTime < CACHE_DURATION) {
             console.log("Using cached news data.");
             renderNews(JSON.parse(cachedData)); // Use cached data
             return;
         }
 
-        let finalUrl = `https://newsapi.org/v2/top-headlines?category=${category}&domains=bbc.com,cnn.com,wsj.com&language=en&apiKey=${key}`;
+        let selectedCategory = category; // Get the selected category from the dropdown
+
+
+        let finalUrl = `https://newsapi.org/v2/top-headlines?category=${selectedcategory}&domains=bbc.com,cnn.com,wsj.com&language=en&apiKey=${key}`;
 
         fetch(finalUrl)
             .then(response => response.json())
-            .then(value => {
-                console.log("Total articles found:", value.totalResults);
-
-                // ✅ Store fetched data in cache
-                localStorage.setItem(CACHE_KEY, JSON.stringify(value.articles));  // Cache articles
-                localStorage.setItem(CACHE_TIME_KEY, now.toString());  // Cache timestamp
-                console.log("News data cached successfully.");
-
-                renderNews(value.articles); // Display news
-            })
-            .catch(error => {
-                console.error("Error fetching news:", error);
-            });
-
-    }
+        .then(value => {
+            console.log(`Total articles found for ${category}:`, value.totalResults);
+            localStorage.setItem(CACHE_KEY, JSON.stringify(value.articles));
+            localStorage.setItem(CACHE_TIME_KEY, now.toString());
+            renderNews(value.articles);
+        })
+        .catch(error => console.error("Error fetching news:", error));
+}
  
 
 
