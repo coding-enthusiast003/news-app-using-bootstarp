@@ -102,8 +102,8 @@ This project is currently **in development**. More features will be added soon!
 
  
 ## 🛠️ Technologies Used
-• HTML
-• CSS
-• JavaScript
-• Bootstrap
-• News API
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+- News API
