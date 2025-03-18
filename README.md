@@ -20,8 +20,8 @@ A dynamic news website that fetches and displays the latest news across various 
 - 💾 **Efficient storage:**  
   Saves news data in `localStorage` to reduce redundant API requests.  
 
-📝 Code Implementation for cache setting(local storage):-
-
+### 📝 Code Implementation for cache setting(local storage):-
+```javascript
     // ✅ Ensure this function exists before calling fetchNews
 function renderNews(articles) {
     let ihtml = "";
@@ -89,7 +89,7 @@ function fetchNews(category = 'general') {
 
 }
 
-    
+```    
 
      
  
