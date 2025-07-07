@@ -11,7 +11,7 @@
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text y='32' font-size='30'>🌍</text></svg>">
 
@@ -31,18 +31,20 @@
                         🌍
                         <h3 style="display: inline;">News Alert</h3>
                     </a>
-                    <img id="HamburgerMenu" src="list.svg" alt="Hamburger Menu" style="height: 35px;width: 45px; cursor: pointer;">
+                    <img id="HamburgerMenu" src="{{ url_for('static', filename='list.svg') }}" alt="Hamburger Menu"
+                        style="height: 35px;width: 45px; cursor: pointer;">
                 </div>
 
                 <div class="media" style="gap: 15px;">
-                    <a href="#" id="facebook"><img src="facebook.svg" alt="facebook"
+                    <a href="#" id="facebook"><img src="{{ url_for('static', filename='facebook.svg') }}" alt="facebook"
                             style="height: 25px;width: 25px;"></a>
-                    <a href="#"><img src="twitter-x.svg" alt="twitter" style="height: 25px;width: 25px;"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='twitter-x.svg') }}" alt="twitter"
+                            style="height: 25px;width: 25px;"></a>
 
                 </div>
             </div>
             <!-- Hidden News Categories (Toggled by Hamburger Menu) -->
-            <ul class="category-list" id="categoryMenu"  >
+            <ul class="category-list" id="categoryMenu">
                 <li onclick="fetchNews('business')">📈 Business</li>
                 <li onclick="fetchNews('sports')">⚽ Sports</li>
                 <li onclick="fetchNews('technology')">💻Technology</li>
@@ -87,35 +89,11 @@
         </div>
     </header>
 
-    <main>
 
-        <div class="container">
-            <div class="jumbotron" style="margin-top: 12px; margin-bottom: 20px;">
-                <h1 class="display-4" style="font-weight: bold;">🌍 News Alert</h1>
-                <p class="lead">Global News, One Destination – Stay Updated Anytime, Anywhere!</p>
-                <hr class="my-4">
-                <p style="font-size: large;"><em>Breaking stories, top headlines, and in-depth coverage from around the
-                        world, all in one place.</em></p>
-
-                <!-- Language Selection Dropdown -->
-                <label for="language" class="fs-5 font-weight-bold">Preferred Language ▼ </label>
-                <select id="language" class="form-control w-auto mx-auto d-inline" onchange="fetchNews()">
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="hi">Hindi</option>
-                </select>
-
-                <br><br>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Read Latest News</a>
-            </div>
+    {% block body %} {% endblock %}
 
 
-            <div id="cardContainer" class="row" style="justify-content: center;">
 
-            </div>
-        </div>
-    </main>
     <footer class="text-dark text-center py-3 mt-4 fw-bold" style="background: lightblue;">
         <p class="mb-0">🌍 News Alert</p>
         <p class="mb-0">© 2025 News Website | All Rights Reserved</p>
@@ -125,10 +103,10 @@
             <a href="#" class="text-dark mx-2 fw-bold">Contact Us</a>
         </p>
     </footer>
-    
-    
 
-    <script src="script.js"></script>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <!--
   This script places a badge on your repl's full-browser view back to your repl's cover

@@ -1,6 +1,4 @@
-let key = "618e6acee2b24825b958ca9e05d1e509"
-let url = `https://newsapi.org/v2/top-headlines?domains=bbc.com,cnn.com,wsj.com&language=en&apiKey=${key}`
-
+ 
 
 
 
@@ -41,29 +39,34 @@ function fetchNews(category = 'general') {
 
     let selectedCategory = category; // Get the selected category from the dropdown
 
+    // Get selected language from dropdown if present
+    let language = 'en';
+    const langSelect = document.getElementById('language');
+    if (langSelect) {
+        language = langSelect.value;
+    }
 
+    // Fetch from backend instead of News API directly
+    let finalUrl = `/api/news?category=${selectedCategory}&language=${language}`;
 
-    let finalUrl = `https://newsapi.org/v2/top-headlines?category=${selectedCategory}&domains=bbc.com,cnn.com,wsj.com&language=en&apiKey=${key}`
+    fetch(finalUrl)
+        .then((response) => response.json())
+        .then((value) => {
+            console.log(value)
+            console.log(`Total articles found for ${selectedCategory}:`, value.totalResults);
 
-    let data = fetch(finalUrl)
-    data.then((value) => {
-        return value.json() // Convert the response to JSON
-    }).then((value) => {
-        console.log(value)
-        console.log(`Total articles found for ${selectedCategory}:`, value.totalResults);
+            // ✅ Store fetched data in cache
+            localStorage.setItem(CACHE_KEY, JSON.stringify(value.articles)); // Cache articles
+            localStorage.setItem(CACHE_TIME_KEY, now.toString()); // Cache timestamp
+            console.log("News data cached successfully.");
 
-        // ✅ Store fetched data in cache
-        localStorage.setItem(CACHE_KEY, JSON.stringify(value.articles)); // Cache articles
-        localStorage.setItem(CACHE_TIME_KEY, now.toString()); // Cache timestamp
-        console.log("News data cached successfully.");
+            // ✅ Ensure the latest fetched news is displayed
+            renderNews(value.articles);  // This forces UI update
 
-        // ✅ Ensure the latest fetched news is displayed
-        renderNews(value.articles);  // This forces UI update
-
-        let ihtml = ""
-        for (let item of value.articles) {
-            console.log(item.title)
-            ihtml += `
+            let ihtml = ""
+            for (let item of value.articles) {
+                console.log(item.title)
+                ihtml += `
 <div class="card mx-2 my-2" style="width: 22rem;">
                 <img src="${item.urlToImage}" class="card-img-top" alt="News Image"
                 onerror="this.onerror=null; this.src='https://dummyimage.com/350x200/cccccc/ffffff&text=No+Image';">
@@ -75,11 +78,11 @@ function fetchNews(category = 'general') {
                 </div>
         </div>
 `
-        }
-        let cardContainer = document.getElementById('cardContainer');
-        cardContainer.innerHTML = ""; // ✅ Clear old content before adding new content
-        cardContainer.innerHTML = ihtml;
-    })
+            }
+            let cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = ""; // ✅ Clear old content before adding new content
+            cardContainer.innerHTML = ihtml;
+        })
         .catch((error) => {
             console.log('some error occured')
             console.error(error)
