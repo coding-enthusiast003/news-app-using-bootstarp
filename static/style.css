@@ -1,3 +1,9 @@
+*{
+    max-height: none;
+    overflow: visible;
+}
+
+
 @keyframes slide {
     0% {
         transform: translateX(100%);
