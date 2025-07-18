@@ -20,6 +20,7 @@
             box-sizing: border-box;
         }
     </style>
+
 </head>
 
 <body>
@@ -73,8 +74,9 @@
 
 
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" id="searchForm">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                        id="searchInput">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
@@ -104,7 +106,18 @@
         </p>
     </footer>
 
+   <script>
+document.getElementById("searchForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // prevent page reload
+    const query = document.getElementById("searchInput").value.trim();
 
+    if (query) {
+        fetch(`/api/gnews?query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => renderNews(data));
+    }
+});
+</script>
 
      <script src="{{ url_for('static', filename='script.js') }}"></script>
 
