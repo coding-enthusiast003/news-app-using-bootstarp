@@ -46,27 +46,23 @@
             </div>
             <!-- Hidden News Categories (Toggled by Hamburger Menu) -->
             <ul class="category-list" id="categoryMenu">
-                <li onclick="fetchnews1('business')">📈 Business</li>
-                <li onclick="fetchnews1('sports')">⚽ Sports</li>
-                <li onclick="fetchnews1('technology')">💻Technology</li>
-                <li onclick="fetchnews1('science')">🔬Science</li>
-                <li onclick="fetchnews1('entertainment')">🎬 Entertainment</li>
-                <li onclick="fetchnews1('health')">🏥 Health</li>
-                <li onclick="fetchnews1('politics')">🏛️⚖️Politics</li>
-                <li onclick="fetchnews1('general')">🌎 World</li>
+                <li data-category="business">📈 Business</li>
+                <li data-category="sports">⚽ Sports</li>
+                <li data-category="technology">💻 Technology</li>
+                <li data-category="science">🔬 Science</li>
+                <li data-category="entertainment">🎬 Entertainment</li>
+                <li data-category="health">🏥 Health</li>
+                <li data-category="politics">🏛️ Politics</li>
+                <li data-category="general">🌎 World</li>
             </ul>
+
         </nav>
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding-left: 10px;">
-            <a class="navbar-brand" href="#">Contests</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -106,20 +102,23 @@
         </p>
     </footer>
 
-   <script>
-document.getElementById("searchForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // prevent page reload
-    const query = document.getElementById("searchInput").value.trim();
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // prevent page reload
+            const query = document.getElementById("searchInput").value.trim();
 
-    if (query) {
-        fetch(`/api/gnews?query=${encodeURIComponent(query)}` || `/api/currentsapi?query=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => renderNews(data));
-    }
-});
-</script>
+            if (query) {
+                fetch(`/api/gnews?query=${encodeURIComponent(query)}` || `/api/currentsapi?query=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => renderNews(data));
+            }
+        });
 
-     <script src="{{ url_for('static', filename='script.js') }}"></script>
+        window.newcategory = "{{ category }}"; // This will be replaced by Flask with the actual category
+
+    </script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <!--
   This script places a badge on your repl's full-browser view back to your repl's cover

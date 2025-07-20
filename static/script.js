@@ -9,6 +9,18 @@ prefferednews.addEventListener('click', () => {
     menu.classList.toggle('show');
 });
 
+// Event delegation for dynamic category menu
+menu.addEventListener("click", (e) => {
+    const li = e.target.closest("li[data-category]");
+    if (li) {
+        const selected = li.dataset.category;
+        history.pushState({}, '', `/${selected}`); // Update URL without reloading
+        fetchnews1(selected); // Fetch news for selected category
+        menu.classList.remove('show'); // Hide menu after selection
+    }
+});
+
+
 // Fetch news from backend (GNews route)
 function fetchnews1(category = 'general') {
     let selectedCategory = category;
@@ -56,10 +68,11 @@ function renderNews(data) {
 
     const container = document.getElementById("cardContainer");
     container.innerHTML = ""; // Clear before rendering
-    container.innerHTML = ihtml;
+    container.innerHTML += ihtml;
 }
 
-// Initial fetch on page load
+
 window.addEventListener("load", () => {
-    fetchnews1(); // Default category: 'general'
+    const category = window.newcategory || 'general';
+    fetchnews1(category);
 });
