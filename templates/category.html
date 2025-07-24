@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+ <div class="container">
+      <h2 class="text-center mb-4">Category: {{ category|capitalize }}</h2>
+         <div id="cardContainer" class="row" style="justify-content: center;">
+ 
+        </div>
+    </div>
+    {% endblock %}
+
+{% block scripts %}
+<script>
+    const category = "{{ category }}";  // From Flask route
+    window.addEventListener("DOMContentLoaded", () => {
+        fetchnews1(category);  // Call the function from your external script.js
+    });
+    // Handle page restore (e.g., back/forward navigation)
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            fetchnews1(category);  // Re-fetch news when restored from bfcache
+        }
+    });
+</script>
+{% endblock %}

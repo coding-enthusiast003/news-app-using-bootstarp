@@ -3,7 +3,7 @@
 <main>
 
     <div class="container">
-        <div class="jumbotron" style="margin-top: 12px; margin-bottom: 20px;">
+         <div class="jumbotron" style="margin-top: 12px; margin-bottom: 20px;">
             <h1 class="display-4" style="font-weight: bold;">🌍 News Alert</h1>
             <p class="lead">Global News, One Destination – Stay Updated Anytime, Anywhere!</p>
             <hr class="my-4">
@@ -11,19 +11,18 @@
                     world, all in one place.</em></p>
 
             <!-- Language Selection Dropdown -->
-            <label for="language" class="fs-5 font-weight-bold">Preferred Language ▼ </label>
-            <select id="language" class="form-control w-auto mx-auto d-inline" onchange="fetchNews()">
+            <!-- <label for="language" class="fs-5 font-weight-bold">Preferred Language ▼ </label>
+            <select id="language" class="form-control w-auto mx-auto d-inline" onchange="fetchNews('{{ category }}',this.value)">
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
                 <option value="hi">Hindi</option>
-            </select>
+            </select> -->
 
             <br><br>
             <a class="btn btn-primary btn-lg" href="#" role="button">Read Latest News</a>
         </div>
-
-        <div id="cardContainer" class="row" style="justify-content: center;">
+         <div id="cardContainer" class="row" style="justify-content: center;">
             
         </div>
     </div>

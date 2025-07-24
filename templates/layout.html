@@ -18,6 +18,7 @@
     <style>
         * {
             box-sizing: border-box;
+            /* overflow-x: hidden; */
         }
     </style>
 
@@ -46,14 +47,14 @@
             </div>
             <!-- Hidden News Categories (Toggled by Hamburger Menu) -->
             <ul class="category-list" id="categoryMenu">
-                <li data-category="business">📈 Business</li>
-                <li data-category="sports">⚽ Sports</li>
-                <li data-category="technology">💻 Technology</li>
-                <li data-category="science">🔬 Science</li>
-                <li data-category="entertainment">🎬 Entertainment</li>
-                <li data-category="health">🏥 Health</li>
-                <li data-category="politics">🏛️ Politics</li>
-                <li data-category="general">🌎 World</li>
+                <li data-category="business"><a href="{{ url_for('home_category', category='business') }}">📈 Business</a></li>
+                <li data-category="sports"><a href="{{ url_for('home_category', category='sports') }}">⚽ Sports</a></li>
+                <li data-category="technology"><a href="{{ url_for('home_category', category='technology') }}">💻 Technology</a></li>
+                <li data-category="science"><a href="{{ url_for('home_category', category='science') }}">🔬 Science</a></li>
+                <li data-category="entertainment"><a href="{{ url_for('home_category', category='entertainment') }}">🎬 Entertainment</a></li>
+                <li data-category="health"><a href="{{ url_for('home_category', category='health') }}">🏥 Health</a></li>
+                <li data-category="politics"><a href="{{ url_for('home_category', category='politics') }}">🏛️ Politics</a></li>
+                <li data-category="general"><a href="{{ url_for('home_category', category='general') }}">🌎 World</a></li>
             </ul>
 
         </nav>
@@ -108,7 +109,7 @@
             const query = document.getElementById("searchInput").value.trim();
 
             if (query) {
-                fetch(`/api/gnews?query=${encodeURIComponent(query)}` || `/api/currentsapi?query=${encodeURIComponent(query)}`)
+                fetch(`/api/gnews?query=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => renderNews(data));
             }
@@ -119,6 +120,7 @@
     </script>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %} {% endblock %}
 
     <!--
   This script places a badge on your repl's full-browser view back to your repl's cover

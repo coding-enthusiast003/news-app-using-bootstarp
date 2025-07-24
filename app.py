@@ -68,7 +68,7 @@ def home():
 
 @app.route('/<category>')
 def home_category(category):
-    return render_template("index.html", category=category)
+    return render_template("category.html", category=category)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

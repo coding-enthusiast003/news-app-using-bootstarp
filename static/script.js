@@ -72,7 +72,13 @@ function renderNews(data) {
 }
 
 
-window.addEventListener("load", () => {
+window.addEventListener("pageshow", function (event) {
     const category = window.newcategory || 'general';
-    fetchnews1(category);
+
+    if (event.persisted) {
+        // If coming from back/forward cache, reload
+        window.location.reload();
+    } else {
+        fetchnews1(category);  // Load news as usual
+    }
 });

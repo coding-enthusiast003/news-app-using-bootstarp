@@ -63,4 +63,9 @@
 .category-list li:hover {
     background: #eaeaea;
 }
- 
+
+.category-list li a{
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+}
