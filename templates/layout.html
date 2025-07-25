@@ -108,11 +108,16 @@
             e.preventDefault(); // prevent page reload
             const query = document.getElementById("searchInput").value.trim();
 
-            if (query) {
-                fetch(`/api/gnews?query=${encodeURIComponent(query)}`)
-                    .then(res => res.json())
-                    .then(data => renderNews(data));
-            }
+           if (query) {
+            // Update the browser URL (optional, but useful for UX)
+            const newUrl = `${window.location.pathname}?query=${encodeURIComponent(query)}`;
+            window.history.pushState({ path: newUrl }, "", newUrl);
+
+            // Fetch news
+            fetch(`/api/gnews?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => renderNews(data));
+        }
         });
 
         window.newcategory = "{{ category }}"; // This will be replaced by Flask with the actual category

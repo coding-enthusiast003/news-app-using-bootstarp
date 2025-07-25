@@ -2,7 +2,7 @@
 
 {% block body %}
  <div class="container">
-      <h2 class="text-center mb-4">Category: {{ category|capitalize }}</h2>
+      <h2 class="text-center mb-4" style="display: flex;align-items: center; justify-content: center;">Category: {{ category|capitalize }}</h2>
          <div id="cardContainer" class="row" style="justify-content: center;">
  
         </div>
@@ -11,14 +11,14 @@
 
 {% block scripts %}
 <script>
-    const category = "{{ category }}";  // From Flask route
-    window.addEventListener("DOMContentLoaded", () => {
-        fetchnews1(category);  // Call the function from your external script.js
-    });
-    // Handle page restore (e.g., back/forward navigation)
-    window.addEventListener("pageshow", (event) => {
+    // Your category load logic (optional)
+    // const category = "{{ category }}";
+    // fetchnews1(category);
+
+    // Reload if page is shown from bfcache (Back/Forward)
+    window.addEventListener("pageshow", function (event) {
         if (event.persisted) {
-            fetchnews1(category);  // Re-fetch news when restored from bfcache
+            location.reload();
         }
     });
 </script>
