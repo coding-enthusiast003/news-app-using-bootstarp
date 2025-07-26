@@ -2,8 +2,19 @@ from flask import Flask, request, jsonify, render_template
 import requests
 from flask_pymongo import PyMongo
 from datetime import datetime, timedelta  # Remove UTC
+from flask_mail import Mail, Message  # Import Mail and Message for email functionality
 
 app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Use your email provider's SMTP server
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'rishi03puri@gmail.com'
+app.config['MAIL_PASSWORD'] = 'svwe lcln wina elgf'  # Use your email password or app password
+app.config['MAIL_DEFAULT_SENDER'] = 'rishi03puri@gmail.com'
+
+mail = Mail(app)
+
 app.config["MONGO_URI"] = "mongodb://localhost:27017/db1"
 mongo = PyMongo(app)
 
@@ -69,6 +80,39 @@ def home():
 @app.route('/<category>')
 def home_category(category):
     return render_template("category.html", category=category)
+
+@app.route('/Contact', methods=['POST', 'GET'])
+def feedback():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        feedback = request.form['feedback']
+
+    #save feedback to MongoDB
+        mongo.db.user_details.insert_one({'name': name,
+            'email': email,
+            'feedback': feedback})
+        
+        # Send confirmation to user
+        try:
+            msg_to_user = Message("Thank You for Your Feedback!",
+                                recipients=[email])
+            msg_to_user.body = f"Hi {name},\n\nWe received your message:\n\"{feedback}\"\n\nThank you for getting in touch!"
+            mail.send(msg_to_user)
+        except Exception as e:
+            print(f"Error sending to user: {e}")
+
+        # Send notification to admin
+        try:
+            msg_to_admin = Message("New Feedback Submitted",
+                                recipients=[app.config['MAIL_USERNAME']])  # your email
+            msg_to_admin.body = f"New feedback from {name} ({email}):\n\n{feedback}"
+            mail.send(msg_to_admin)
+        except Exception as e:
+            print(f"Error sending to admin: {e}")
+
+        return render_template("contact.html", message="Thanks! Your feedback was submitted successfully.")
+    return render_template("contact.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

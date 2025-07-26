@@ -1,0 +1,84 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <style>
+    
+#form-feedback {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0b5ed7;
+}
+
+ </style>
+ <body>
+   <div id="form-feedback">
+       <h2>Feedback</h2>
+   </div>
+   <form class="form" method="POST" action="{{ url_for('feedback') }}">
+       <div>
+           <label for="name">Name:</label>
+           <input type="text" id="name" name="name" required>
+       </div>
+       <div>
+           <label for="email">Email:</label>
+           <input type="email" id="email" name="email" required>
+       </div>
+       <div>
+           <label for="feedback">Feedback:</label>
+           <textarea id="feedback" name="feedback" rows="5" cols="40" placeholder="Write your message here..." required></textarea>
+       </div>
+       <button type="submit">Send Feedback</button>
+   </form>
+
+   {% if message %}
+   <p style="color: green;">{{ message }}</p>
+   {% endif %}
+
+ </body>
+ </html>

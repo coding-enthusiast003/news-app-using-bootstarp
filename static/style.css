@@ -16,7 +16,7 @@
     
     white-space: nowrap; /* Prevents text from breaking into lines */
     font-size: 18px;
-    font-weight: bold;
+    font-weight: bolder;
     animation: slide 10s linear infinite;
     padding: 0;
     margin-bottom: 0;
@@ -67,5 +67,16 @@
 .category-list li a{
     list-style: none;
     text-decoration: none;
+    
     color: inherit;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+

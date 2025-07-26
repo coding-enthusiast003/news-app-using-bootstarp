@@ -11,15 +11,6 @@
 
 {% block scripts %}
 <script>
-    // Your category load logic (optional)
-    // const category = "{{ category }}";
-    // fetchnews1(category);
-
-    // Reload if page is shown from bfcache (Back/Forward)
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) {
-            location.reload();
-        }
-    });
+     window.category = "{{ category }}"; // This will be replaced by Flask with the actual category
 </script>
 {% endblock %}
