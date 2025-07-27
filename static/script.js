@@ -1,24 +1,14 @@
 let prefferednews = document.getElementById('HamburgerMenu');
 let menu = document.getElementById('categoryMenu');
 
-// Hide menu on page load
-window.onload = () => menu.classList.remove('show');
+// // Hide menu on page load
+// window.onload = () => menu.classList.remove('show');
 
 // Toggle menu visibility
 prefferednews.addEventListener('click', () => {
     menu.classList.toggle('show');
 });
 
-// Event delegation for dynamic category menu
-menu.addEventListener("click", (e) => {
-    const li = e.target.closest("li[data-category]");
-    if (li) {
-        const selected = li.dataset.category;
-        history.pushState({}, '', `/${selected}`); // Update URL without reloading
-        fetchnews1(selected); // Fetch news for selected category
-        menu.classList.remove('show'); // Hide menu after selection
-    }
-});
 
 
 // Fetch news from backend (GNews route)
@@ -72,7 +62,23 @@ function renderNews(data) {
 }
 
 
+ 
+
 window.addEventListener("load", () => {
     const category = window.category || 'general';
     fetchnews1(category);
+    menu.classList.remove('show');
 });
+
+// Handle back/forward navigation
+window.addEventListener("popstate", (event) => {
+    const pathCategory = window.location.pathname.slice(1) || "general";
+    fetchnews1(pathCategory);
+});
+
+menu.addEventListener("click", (e) => {
+        const clickedItem = e.target.closest("li[data-category]");
+        if (clickedItem) {
+            menu.classList.remove("show"); // Hide the menu
+        }
+    });
