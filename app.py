@@ -61,15 +61,29 @@ def api_gnews():
                 f"category={category}&lang={language}&apikey={G_NEWS_API_KEY}"
             )
         response = requests.get(url)
-        data = response.json()
-        mongo.db.newsdb.replace_one(
-            {"_id": query_key},
-            {"_id": query_key, "data": data, "fetched_at": datetime.utcnow()},
-              upsert=True  # Upsert to create or update the document
-        )
-        print("New data fetched and cached.")
-        return jsonify(data)
+        if response.status_code == 200:
+            new_data = response.json()
+            print("Data fetched successfully.")
+            new_data = new_data.get('articles', [])
+            old_data = []
+            if cached and 'data' in cached:
+                old_data = cached['data'].get('articles', [])
 
+            # Combine old + new articles (new ones first)
+            combined_articles = new_data + old_data
+            combined_data = {"articles": combined_articles}
+            # Update cache
+            mongo.db.newsdb.replace_one(
+                {"_id": query_key},
+                {"_id": query_key, "data": combined_data, "fetched_at": datetime.utcnow()},
+                upsert=True
+            )
+            return jsonify(combined_data)
+        else:
+            print("⚠️ API fetch failed. Serving stale cache.")
+            return jsonify(cached['data'])
+
+        
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
