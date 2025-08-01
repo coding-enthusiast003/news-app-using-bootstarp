@@ -15,7 +15,7 @@ app.config['MAIL_DEFAULT_SENDER'] = 'rishi03puri@gmail.com'
 
 mail = Mail(app)
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/db1"
+app.config["MONGO_URI"] = "mongodb+srv://subham:<db_password>@cluster0.zl23awz.mongodb.net/newsdb?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
 mongo.db.newsdb.create_index("fetched_at", expireAfterSeconds = 129600) # cached data will expire after 36 hours
