@@ -1,26 +1,31 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 from flask_pymongo import PyMongo
+from dotenv import load_dotenv
+import os
 from datetime import datetime, timedelta  # Remove UTC
 from flask_mail import Mail, Message  # Import Mail and Message for email functionality
+
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Use your email provider's SMTP server
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'rishi03puri@gmail.com'
-app.config['MAIL_PASSWORD'] = 'svwe lcln wina elgf'  # Use your email password or app password
-app.config['MAIL_DEFAULT_SENDER'] = 'rishi03puri@gmail.com'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
 
 mail = Mail(app)
 
-app.config["MONGO_URI"] = "mongodb+srv://subham:RgZ6FaijzSfc9Pzb@cluster0.kcpfkoi.mongodb.net/db1?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 
 mongo.db.newsdb.create_index("fetched_at", expireAfterSeconds = 129600) # cached data will expire after 36 hours
 
-G_NEWS_API_KEY = "3eeb69dae14f54add08ec07a3487cffe" # gnewsapi key
+G_NEWS_API_KEY = os.getenv("API_KEY") # gnewsapi key
 
 @app.route('/api/gnews', methods=['GET'])
 def api_gnews():
