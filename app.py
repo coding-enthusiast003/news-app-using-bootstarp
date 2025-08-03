@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, jsonify, render_template
 import requests
 from flask_pymongo import PyMongo
 from dotenv import load_dotenv
