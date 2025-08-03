@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask,request, jsonify, render_template
 import requests
 from flask_pymongo import PyMongo
 from dotenv import load_dotenv
@@ -30,9 +30,9 @@ G_NEWS_API_KEY = os.getenv("API_KEY") # gnewsapi key
 @app.route('/api/gnews', methods=['GET'])
 def api_gnews():
     try:
-        query = request.args.get('query') # Get query parameter
-        category = request.args.get('category', 'general') # Get category parameter
-        language = request.args.get('language', 'en') # Get language parameter
+        query = request.args.get('query')  # Get ?query=...
+        category = request.args.get('category', 'general')  # Default to 'general'
+        language = request.args.get('language', 'en')       # Default to 'en'
 
         key_parts = [query or "", category or "", language] #
         query_key = "_".join(key_parts).strip("_")
