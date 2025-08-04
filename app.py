@@ -23,7 +23,7 @@ mail = Mail(app)
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 
-mongo.db.newsdb.create_index("fetched_at", expireAfterSeconds = 129600) # cached data will expire after 36 hours
+mongo.db.newsdb.create_index("fetched_at", expireAfterSeconds = 86400) # cached data will expire after 24 hours
 
 G_NEWS_API_KEY = os.getenv("API_KEY") # gnewsapi key
 
@@ -38,7 +38,9 @@ def api_gnews():
         query_key = "_".join(key_parts).strip("_")
 
         cached = mongo.db.newsdb.find_one({"_id": query_key})
-  
+
+        
+         
         # Check if cached data exists and is not older than 30 minutes
         # datetime.utcnow() - cached['fetched_at'] checks if the cached data is older
         if cached and datetime.utcnow() - cached['fetched_at'] < timedelta(minutes=30):
@@ -58,30 +60,23 @@ def api_gnews():
             )
         response = requests.get(url)
         if response.status_code == 200:
-            new_data = response.json()
-            print("Data fetched successfully.")
-            new_data = new_data.get('articles', [])
-            old_data = []
-            if cached and 'data' in cached:
-                old_data = cached['data'].get('articles', [])
-
-            # Combine old + new articles (new ones first)
-            combined_articles = new_data + old_data
-            combined_data = {"articles": combined_articles}
-            print(f"Combined data has {len(combined_data['articles'])} articles.")
-            # Update cache
+            print("Data fetched from GNews API.")
+            data = response.json()
             mongo.db.newsdb.replace_one(
                 {"_id": query_key},
-                {"_id": query_key, "data": combined_data, "fetched_at": datetime.utcnow()},
-                upsert=True
+                {"_id": query_key, "data": data, "fetched_at": datetime.utcnow()},
+                upsert=True  # Upsert to create or update the document
             )
-            print("Cache updated with new data.")
-            return jsonify(combined_data)
+            print("New data fetched and cached.")
+            return jsonify(data)
         else:
-            print("⚠️ API fetch failed. Serving stale cache.")
-            return jsonify(cached['data'])
+            print(f"Error fetching data: {response.status_code}")
+            if cached:
+                print("Returning cached data due to API error.")
+                return jsonify(cached['data'])
+            else:
+                return jsonify({"error": "Failed to fetch data from GNews API and no cached data available"}), 502
 
-        
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
