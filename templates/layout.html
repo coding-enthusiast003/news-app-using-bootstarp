@@ -26,6 +26,29 @@
             box-sizing: border-box;
             /* overflow-x: hidden; */
         }
+
+        #banner {
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            text-align: center;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            #banner {
+                font-size: 0.95rem;
+                padding: 8px 6px;
+                line-height: 1.3;
+                word-break: break-word;
+            }
+        }
+
+        @media (max-width: 400px) {
+            #banner {
+                font-size: 0.85rem;
+                padding: 6px 2px;
+            }
+        }
     </style>
     {% block styles %} {% endblock %}
 
@@ -36,7 +59,7 @@
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
                 <div class="icon-list">
-                    <a class="navbar-brand" href="index.html" style="margin-right: 12px;">
+                    <a class="navbar-brand" style="margin-right: 12px;">
                         🌍
                         <h3 style="display: inline;">News Alert</h3>
                     </a>
