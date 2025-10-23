@@ -1,13 +1,12 @@
 # 📰 News Website  
 
-A dynamic news website that fetches and displays the latest news across various categories. Built using HTML, CSS, JavaScript, and Bootstrap, it integrates the News API to provide real-time updates. 
+A dynamic news website that fetches and displays the latest news across various categories. Built using HTML, CSS, JavaScript, and Bootstrap, it integrates the Gnews API to provide real-time updates. 
 
 ## 📌 Features  
 - 📰 Displays trending and latest news  
 - 📂 Categorized news sections (Politics, Sports, Technology, etc.)  
 - 📱 Fully responsive design for mobile and desktop
-- ⚡ Local storage caching to optimize API requests and reduce redundant fetches
-
+ 
 ## 🔹 Caching System (Optimized News Fetching)
 ✔ **How It Works:**
 
